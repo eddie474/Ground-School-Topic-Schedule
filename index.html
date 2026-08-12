@@ -10,8 +10,11 @@
   <style>
     :root{
       --blue:#0066ff;
-      --blueDeep:#082a66;
-      --blueSoft:#eef6ff;
+      --blue-deep:#082a66;
+      --blue-dark:#071f4d;
+      --blue-soft:#eef6ff;
+      --blueDeep:var(--blue-deep);
+      --blueSoft:var(--blue-soft);
       --yellow:#facc15;
       --yellowSoft:#fff9dc;
       --ink:#0b1736;
@@ -23,13 +26,28 @@
 
     *{ box-sizing:border-box; }
 
-    body{ background:#fff; }
+    html,body{margin:0;min-height:100%;}
 
-    .page-shell{
+    body{
       background:
         radial-gradient(circle at 8% 2%, rgba(0,102,255,.09), transparent 28%),
         radial-gradient(circle at 96% 12%, rgba(250,204,21,.10), transparent 24%),
+        radial-gradient(circle at 78% 78%, rgba(0,102,255,.07), transparent 28%),
         linear-gradient(180deg,#ffffff 0%,#f7fbff 58%,#ffffff 100%);
+    }
+
+    .page-shell{
+      position:relative;
+      width:calc(100% - 100px);
+      height:calc(100vh - 44px);
+      margin:22px 50px;
+      display:grid;
+      grid-template-rows:clamp(105px,12vh,170px) clamp(150px,18vh,250px) minmax(0,1fr);
+      overflow:hidden;
+      background:var(--panel);
+      border:1px solid rgba(0,102,255,.13);
+      border-radius:22px;
+      box-shadow:0 14px 36px rgba(20,47,91,.10);
     }
 
     .sky-wash{
@@ -47,30 +65,34 @@
     }
 
     .header-panel{
-      background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(247,251,255,.94));
-      border:1px solid rgba(0,102,255,.12);
-      box-shadow:0 12px 34px rgba(20,47,91,.09);
+      height:100%;
+      padding:26px 28px;
+      background:transparent;
+      border-bottom:1px solid var(--line);
     }
 
     .header-grid{
       display:grid;
-      grid-template-columns:minmax(170px,1fr) auto minmax(170px,1fr);
+      grid-template-columns:minmax(180px,1fr) auto minmax(180px,1fr);
       align-items:center;
       gap:1rem;
-      min-height:88px;
+      height:100%;
     }
 
     .brand-logo{
-      width:clamp(120px,18vw,230px);
-      max-height:82px;
+      width:150px;
+      height:150px;
       object-fit:contain;
       filter:drop-shadow(0 8px 14px rgba(15,23,42,.10));
     }
 
-    .header-logo-wrap{display:flex;justify-content:flex-end;}
+    .header-logo-wrap{display:flex;justify-content:flex-end;align-items:center;width:140px;height:92px;justify-self:end;overflow:visible;}
 
     .headline-pop{
       color:var(--blueDeep);
+      font-size:clamp(2rem,3.2vw,2.8rem);
+      font-weight:900;
+      letter-spacing:-.045em;
     }
 
     .headline-rule{
@@ -91,21 +113,33 @@
       box-shadow:0 6px 18px rgba(20,47,91,.07);
       padding:.55rem .8rem;
       color:var(--blueDeep);
-      font-weight:700;
+      font-size:.86rem;
+      font-weight:800;
     }
 
     .countdown-shell{
       position:relative;
       overflow:hidden;
-      min-height:250px;
+      width:100%;
+      height:100%;
+      min-height:0;
       display:flex;
       align-items:center;
+      padding:20px;
       background:linear-gradient(110deg,#071f4d 0%,#083d91 48%,#0066ff 100%);
-      border:1px solid rgba(0,102,255,.18);
-      box-shadow:0 18px 40px rgba(0,63,156,.20);
       color:white;
     }
-    .countdown-shell > div{width:100%;}
+    .countdown-shell > div{
+      position:relative;
+      z-index:10;
+      width:100%;
+      height:100%;
+      display:grid;
+      grid-template-columns:minmax(300px,.9fr) minmax(560px,1.5fr);
+      grid-template-rows:minmax(0,1fr) auto;
+      align-items:center;
+      gap:16px;
+    }
 
     .countdown-shell::after{
       content:"";
@@ -120,7 +154,7 @@
     .countdown-label{
       text-transform:uppercase;
       letter-spacing:.14em;
-      font-size:.68rem;
+      font-size:.7rem;
       font-weight:800;
       color:rgba(255,255,255,.68);
     }
@@ -129,6 +163,9 @@
       font-variant-numeric:tabular-nums;
       letter-spacing:-.03em;
     }
+
+    #countdownClass,#countdownClock{font-size:clamp(1.4rem,2.5vw,2rem);font-weight:900;}
+    #countdownSub{font-size:.84rem;color:rgba(255,255,255,.68);}
 
     .status-dot{
       width:10px;height:10px;border-radius:999px;
@@ -140,18 +177,18 @@
     .today-strip{
       display:grid;
       grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:.55rem;
+      gap:9px;
     }
 
     .session-chip{
       border:1px solid rgba(255,255,255,.16);
       background:rgba(255,255,255,.08);
       border-radius:12px;
-      padding:.55rem .7rem;
+      padding:11px 13px;
       min-width:0;
     }
-    .session-chip strong{display:block;font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .session-chip span{font-size:.68rem;color:rgba(255,255,255,.68);}
+    .session-chip strong{display:block;font-size:.94rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .session-chip span{font-size:.63rem;color:rgba(255,255,255,.68);}
     .session-chip.active{background:rgba(250,204,21,.14);border-color:rgba(250,204,21,.46);}
     .session-chip.next{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.30);}
     .session-chip.off{opacity:.42;}
@@ -169,19 +206,22 @@
     .card{
       position:relative;
       overflow:hidden;
-      background:var(--cardBg);
-      border:1px solid rgba(11,77,166,.12);
-      border-radius:20px;
-      box-shadow:0 10px 28px rgba(28,61,111,.08);
+      min-width:0;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+      padding:clamp(20px,1.65vw,34px);
+      background:rgba(255,255,255,.72);
+      border:0;
+      border-right:1px solid var(--line);
       animation:cardRise .6s ease both;
-      transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease;
     }
+    .card:last-child{border-right:0;}
     .card::before{
       content:"";
       position:absolute;inset:0 0 auto 0;height:4px;
       background:linear-gradient(90deg,var(--blue) 0%,var(--blue) 74%,var(--yellow) 100%);
     }
-    .card:hover{transform:translateY(-4px);border-color:rgba(0,102,255,.28);box-shadow:0 18px 38px rgba(0,83,195,.12);}
     .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.12s}.card:nth-child(3){animation-delay:.19s}.card:nth-child(4){animation-delay:.26s}
 
     .course-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;}
@@ -219,6 +259,10 @@
 
     .upcoming-box{
       margin-top:1rem;
+      min-height:0;
+      flex:1;
+      display:flex;
+      flex-direction:column;
       background:#fbfdff;
       border:1px solid var(--line);
       border-radius:14px;
@@ -236,6 +280,8 @@
       display:grid;
       grid-template-columns:116px 1fr;
       gap:.75rem;
+      min-height:0;
+      flex:1;
       align-items:center;
       padding:.62rem .8rem;
       border-bottom:1px solid #edf3fb;
@@ -352,12 +398,42 @@
     .c172-plane{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 15px rgba(15,23,42,.18));transform-origin:50% 55%;animation:c172Bob 2.8s ease-in-out infinite;}
     .mono{font-variant-numeric:tabular-nums;}
 
+    .page-header{position:relative;z-index:10;min-width:0;}
+    .summary-section{position:relative;z-index:10;min-width:0;min-height:0;}
+    .topics-grid{
+      position:relative;
+      z-index:10;
+      min-width:0;
+      min-height:0;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      overflow:hidden;
+      border-top:1px solid var(--line);
+    }
+
     @media(max-width:820px){
+      body{overflow:auto;}
+      .page-shell{
+        width:100%;
+        height:auto;
+        min-height:100vh;
+        margin:0;
+        display:block;
+        overflow:hidden;
+        border-radius:0;
+      }
+      .page-header{min-height:105px;}
+      .header-panel{padding:18px 16px;}
       .header-grid{grid-template-columns:1fr;justify-items:center;text-align:center;}
       .header-logo-wrap{justify-content:center;}
       .today-strip{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .summary-section{min-height:150px;}
+      .countdown-shell{height:auto;min-height:150px;}
+      .countdown-shell > div{display:grid;grid-template-columns:1fr;height:auto;}
+      .topics-grid{grid-template-columns:1fr;overflow:visible;}
+      .card{border-right:0;border-bottom:1px solid var(--line);}
+      .card:last-child{border-bottom:0;}
     }
-    @media(min-width:821px){.countdown-shell{height:250px;}}
     @media(max-width:520px){
       .today-strip{grid-template-columns:1fr 1fr;}
       .course-head{display:block;}
@@ -365,15 +441,39 @@
       .session-row{grid-template-columns:1fr;gap:.15rem;}
     }
     @media(min-width:1800px){
-      .course-title{font-size:1.45rem;}
-      .course-time{font-size:.95rem;padding:.45rem .78rem;}
-      .meta-row{font-size:.86rem;}
-      .today-topic-label{font-size:.75rem;}
-      .today-topic-name{font-size:1.2rem;}
-      .upcoming-title,.upcoming-count{font-size:.78rem;}
-      .session-date{font-size:.84rem;}
-      .session-topic{font-size:1rem;}
+      .course-title{font-size:1.7rem;}
+      .course-time{font-size:1.05rem;padding:.5rem .84rem;}
+      .meta-row{font-size:.95rem;}
+      .today-topic-label{font-size:.8rem;}
+      .today-topic-name{font-size:1.35rem;}
+      .upcoming-title,.upcoming-count{font-size:.84rem;}
+      .session-date{font-size:.95rem;}
+      .session-topic{font-size:1.12rem;}
     }
+    @media(min-width:821px) and (max-width:1599px){
+      body{overflow:auto;}
+      .page-shell{
+        width:calc(100% - 32px);
+        height:auto;
+        min-height:calc(100vh - 32px);
+        margin:16px;
+        display:grid;
+        grid-template-rows:clamp(105px,12vh,170px) clamp(150px,18vh,250px) auto;
+      }
+      .topics-grid{grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;}
+      .card{border-bottom:1px solid var(--line);}
+      .card:nth-child(2){border-right:0;}
+      .card:nth-last-child(-n+2){border-bottom:0;}
+    }
+    @media(min-width:821px) and (max-width:1100px){
+      .page-shell{grid-template-rows:auto auto auto;}
+      .page-header{min-height:105px;}
+      .summary-section{min-height:150px;}
+      .countdown-shell{height:auto;min-height:150px;}
+      .countdown-shell > div{grid-template-columns:1fr;height:auto;}
+      .today-strip{grid-template-columns:repeat(2,minmax(0,1fr));}
+    }
+    @media(min-width:1600px){body{overflow:hidden;}}
 
     @keyframes skyBreathe{0%,100%{opacity:.72;transform:scale(1.01)}50%{opacity:1;transform:scale(1.05)}}
     @keyframes trailSweep{from{transform:translateX(-35%) rotate(-12deg)}to{transform:translateX(235%) rotate(-12deg)}}
@@ -401,8 +501,8 @@
   </script>
 </head>
 
-<body class="font-sans min-h-screen bg-white text-slate-900">
-  <div class="page-shell relative overflow-hidden text-slate-900 p-4 sm:p-8 min-h-screen">
+<body class="font-sans text-slate-900">
+  <div class="page-shell relative text-slate-900">
     <div class="sky-wash pointer-events-none absolute inset-0"></div>
     <div class="pointer-events-none absolute inset-0 overflow-hidden">
       <span class="flight-trail"></span>
@@ -436,13 +536,13 @@
       <span>Instructor Standdown</span>
     </button>
 
-<header class="relative z-10 mb-4 max-w-7xl mx-auto">
-  <div class="header-panel rounded-[22px] p-4 sm:p-6 relative">
+<header class="page-header">
+  <div class="header-panel relative">
     <div class="header-grid">
       <div id="todayLine" class="today-badge text-sm mono justify-self-start">—</div>
 
       <div class="text-center">
-        <h1 class="headline-pop font-extrabold tracking-tight leading-tight text-[30px] sm:text-[34px]">Ground School Topics</h1>
+        <h1 class="headline-pop leading-tight">Ground School Topics</h1>
         <div class="headline-rule"></div>
       </div>
 
@@ -453,9 +553,9 @@
   </div>
 </header>
 
-<section class="relative z-10 left-1/2 w-screen -translate-x-1/2 mb-4">
-  <div class="countdown-shell p-4 sm:p-5 2xl:p-7">
-    <div class="relative z-10 grid gap-4 lg:grid-cols-[1.2fr_.8fr] lg:items-center">
+<section class="summary-section">
+  <div class="countdown-shell">
+    <div class="relative z-10">
       <div>
         <div class="flex items-center gap-3">
           <span class="status-dot" id="countdownDot"></span>
@@ -472,11 +572,11 @@
   </div>
 </section>
 
-      <main class="relative z-10 grid gap-4 2xl:gap-6 md:grid-cols-2 2xl:grid-cols-4 w-full">
-  <section id="card-instrument" class="card glass-card p-5 2xl:p-7 rounded-2xl"></section>
-  <section id="card-written" class="card glass-card p-5 2xl:p-7 rounded-2xl"></section>
-  <section id="card-private" class="card glass-card p-5 2xl:p-7 rounded-2xl"></section>
-  <section id="card-commercial" class="card glass-card p-5 2xl:p-7 rounded-2xl"></section>
+      <main class="topics-grid">
+  <section id="card-instrument" class="card"></section>
+  <section id="card-written" class="card"></section>
+  <section id="card-private" class="card"></section>
+  <section id="card-commercial" class="card"></section>
 </main>
 
       <div class="c172-flyby" aria-hidden="true">
@@ -487,7 +587,6 @@
         />
       </div>
     </div>
-  </div>
 
 <script>
 /* =========================================
