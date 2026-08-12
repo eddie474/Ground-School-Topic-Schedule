@@ -91,14 +91,20 @@
     .headline-pop{
       color:var(--blueDeep);
       font-size:clamp(2rem,3.2vw,2.8rem);
-      font-weight:900;
+      font-weight:800;
       letter-spacing:-.045em;
     }
 
+    .header-title-wrap{position:relative;}
+
     .headline-rule{
+      position:absolute;
+      top:calc(100% + .65rem);
+      left:50%;
+      transform:translateX(-50%);
       width:min(280px,70vw);
       height:3px;
-      margin:.65rem auto 0;
+      margin:0;
       border-radius:999px;
       background:linear-gradient(90deg,transparent,var(--blue),var(--yellow),transparent);
     }
@@ -217,11 +223,6 @@
       animation:cardRise .6s ease both;
     }
     .card:last-child{border-right:0;}
-    .card::before{
-      content:"";
-      position:absolute;inset:0 0 auto 0;height:4px;
-      background:linear-gradient(90deg,var(--blue) 0%,var(--blue) 74%,var(--yellow) 100%);
-    }
     .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.12s}.card:nth-child(3){animation-delay:.19s}.card:nth-child(4){animation-delay:.26s}
 
     .course-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;}
@@ -541,7 +542,7 @@
     <div class="header-grid">
       <div id="todayLine" class="today-badge text-sm mono justify-self-start">—</div>
 
-      <div class="text-center">
+      <div class="header-title-wrap text-center">
         <h1 class="headline-pop leading-tight">Ground School Topics</h1>
         <div class="headline-rule"></div>
       </div>
