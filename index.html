@@ -97,11 +97,15 @@
     .countdown-shell{
       position:relative;
       overflow:hidden;
+      min-height:250px;
+      display:flex;
+      align-items:center;
       background:linear-gradient(110deg,#071f4d 0%,#083d91 48%,#0066ff 100%);
       border:1px solid rgba(0,102,255,.18);
       box-shadow:0 18px 40px rgba(0,63,156,.20);
       color:white;
     }
+    .countdown-shell > div{width:100%;}
 
     .countdown-shell::after{
       content:"";
@@ -311,6 +315,7 @@
       .header-logo-wrap{justify-content:center;}
       .today-strip{grid-template-columns:repeat(2,minmax(0,1fr));}
     }
+    @media(min-width:821px){.countdown-shell{height:250px;}}
     @media(max-width:520px){
       .today-strip{grid-template-columns:1fr 1fr;}
       .course-head{display:block;}
@@ -401,8 +406,8 @@
   </div>
 </header>
 
-<section class="relative z-10 w-full mb-4">
-  <div class="countdown-shell rounded-[20px] p-4 sm:p-5 2xl:p-7">
+<section class="relative z-10 left-1/2 w-screen -translate-x-1/2 mb-4">
+  <div class="countdown-shell p-4 sm:p-5 2xl:p-7">
     <div class="relative z-10 grid gap-4 lg:grid-cols-[1.2fr_.8fr] lg:items-center">
       <div>
         <div class="flex items-center gap-3">
