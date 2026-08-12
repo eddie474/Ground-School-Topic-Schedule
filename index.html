@@ -305,6 +305,48 @@
       font-weight:900;
       font-variant-numeric:tabular-nums;
     }
+    .standdown-toggle{
+      position:fixed;
+      left:clamp(12px,2vw,32px);
+      bottom:clamp(12px,2vw,32px);
+      z-index:110;
+      display:flex;
+      align-items:center;
+      gap:.7rem;
+      padding:.65rem .8rem;
+      border:1px solid rgba(0,102,255,.18);
+      border-radius:14px;
+      background:rgba(255,255,255,.96);
+      box-shadow:0 10px 28px rgba(20,47,91,.18);
+      color:var(--blueDeep);
+      font-size:.78rem;
+      font-weight:800;
+      cursor:pointer;
+      backdrop-filter:blur(10px);
+    }
+    .standdown-toggle-track{
+      position:relative;
+      width:42px;
+      height:24px;
+      flex:none;
+      border-radius:999px;
+      background:#cbd5e1;
+      transition:background .2s ease;
+    }
+    .standdown-toggle-track::after{
+      content:"";
+      position:absolute;
+      top:3px;
+      left:3px;
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 2px 6px rgba(15,23,42,.24);
+      transition:transform .2s ease;
+    }
+    .standdown-toggle[aria-checked="true"] .standdown-toggle-track{background:var(--blue);}
+    .standdown-toggle[aria-checked="true"] .standdown-toggle-track::after{transform:translateX(18px);}
 
     .c172-flyby{position:fixed;right:0;bottom:clamp(10px,2.5vh,28px);z-index:20;width:clamp(110px,14vw,220px);pointer-events:none;opacity:.82;transform:translateX(0);animation:c172Travel 9s linear infinite;}
     .c172-plane{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 15px rgba(15,23,42,.18));transform-origin:50% 55%;animation:c172Bob 2.8s ease-in-out infinite;}
@@ -388,6 +430,11 @@
         <div id="standdownTimer" class="standdown-timer">Standdown in progress</div>
       </div>
     </aside>
+
+    <button id="standdownToggle" class="standdown-toggle" type="button" role="switch" aria-checked="false">
+      <span class="standdown-toggle-track" aria-hidden="true"></span>
+      <span>Instructor Standdown</span>
+    </button>
 
 <header class="relative z-10 mb-4 max-w-7xl mx-auto">
   <div class="header-panel rounded-[22px] p-4 sm:p-6 relative">
@@ -731,20 +778,32 @@ function formatDuration(ms) {
   return `${mins}m ${pad2(secs)}s`;
 }
 
+let standdownOverride = null;
+
 function updateStanddown(now = new Date()) {
   const overlay = document.getElementById("standdownOverlay");
   const timer = document.getElementById("standdownTimer");
+  const toggle = document.getElementById("standdownToggle");
   const starts = timeOnDate(now, "12:30");
   const ends = timeOnDate(now, "13:00");
-  const active = now >= starts && now < ends;
+  const scheduledActive = now >= starts && now < ends;
+  const active = standdownOverride ?? scheduledActive;
 
   overlay.classList.toggle("active", active);
   overlay.setAttribute("aria-hidden", String(!active));
+  toggle.setAttribute("aria-checked", String(active));
 
   if (active) {
-    timer.textContent = `${formatDuration(ends - now)} remaining • Classes resume at 1:00 PM`;
+    timer.textContent = scheduledActive
+      ? `${formatDuration(ends - now)} remaining • Classes resume at 1:00 PM`
+      : "Instructor standdown enabled manually";
   }
 }
+
+document.getElementById("standdownToggle").addEventListener("click", (event) => {
+  standdownOverride = event.currentTarget.getAttribute("aria-checked") !== "true";
+  updateStanddown();
+});
 
 function updateCountdown() {
   const now = new Date();
