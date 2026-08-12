@@ -317,6 +317,16 @@
       .course-time{display:inline-block;margin-top:.45rem;}
       .session-row{grid-template-columns:1fr;gap:.15rem;}
     }
+    @media(min-width:1800px){
+      .course-title{font-size:1.45rem;}
+      .course-time{font-size:.95rem;padding:.45rem .78rem;}
+      .meta-row{font-size:.86rem;}
+      .today-topic-label{font-size:.75rem;}
+      .today-topic-name{font-size:1.2rem;}
+      .upcoming-title,.upcoming-count{font-size:.78rem;}
+      .session-date{font-size:.84rem;}
+      .session-topic{font-size:1rem;}
+    }
 
     @keyframes skyBreathe{0%,100%{opacity:.72;transform:scale(1.01)}50%{opacity:1;transform:scale(1.05)}}
     @keyframes trailSweep{from{transform:translateX(-35%) rotate(-12deg)}to{transform:translateX(235%) rotate(-12deg)}}
@@ -391,8 +401,8 @@
   </div>
 </header>
 
-<section class="relative z-10 max-w-7xl mx-auto mb-4">
-  <div class="countdown-shell rounded-[20px] p-4 sm:p-5">
+<section class="relative z-10 w-full mb-4">
+  <div class="countdown-shell rounded-[20px] p-4 sm:p-5 2xl:p-7">
     <div class="relative z-10 grid gap-4 lg:grid-cols-[1.2fr_.8fr] lg:items-center">
       <div>
         <div class="flex items-center gap-3">
@@ -410,11 +420,11 @@
   </div>
 </section>
 
-      <main class="relative z-10 grid gap-4 md:grid-cols-2 2xl:grid-cols-4 max-w-[1920px] mx-auto">
-  <section id="card-instrument" class="card glass-card p-5 rounded-2xl"></section>
-  <section id="card-written" class="card glass-card p-5 rounded-2xl"></section>
-  <section id="card-private" class="card glass-card p-5 rounded-2xl"></section>
-  <section id="card-commercial" class="card glass-card p-5 rounded-2xl"></section>
+      <main class="relative z-10 grid gap-4 2xl:gap-6 md:grid-cols-2 2xl:grid-cols-4 w-full">
+  <section id="card-instrument" class="card glass-card p-5 2xl:p-7 rounded-2xl"></section>
+  <section id="card-written" class="card glass-card p-5 2xl:p-7 rounded-2xl"></section>
+  <section id="card-private" class="card glass-card p-5 2xl:p-7 rounded-2xl"></section>
+  <section id="card-commercial" class="card glass-card p-5 2xl:p-7 rounded-2xl"></section>
 </main>
 
       <div class="c172-flyby" aria-hidden="true">
